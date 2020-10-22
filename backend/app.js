@@ -11,10 +11,16 @@ app.use(express.json());
 // method inbuilt in express to recognize the incoming Request Object as strings or arrays
 app.use(express.urlencoded({ extended: true }));
 
-
+//Setup Cross Origin
+// This will prevent LOCALHOST calls errors
 app.use(require("cors")());
 
-app.use("/user", require("./routes"));
+app.use("/user", require("./routes/user"));
+app.use("/user", require("./routes/chatroom"));
 
+// Setup Error Handlers
+const errorHandlers = require("./handlers/errorHandlers");
+app.use(errorHandlers.notFound);
+app.use(errorHandlers.mongoseErrors);
 
 
