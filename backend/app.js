@@ -23,6 +23,8 @@ const errorHandlers = require("./handlers/errorHandlers");
 app.use(errorHandlers.notFound);
 app.use(errorHandlers.mongoseErrors);
 
+
+// Validating the Environment
 if(process.env.ENV === "DEVELOPMENT"){
     app.use(errorHandlers.developmentErrors);
 }
