@@ -4,3 +4,6 @@ JWT Authentication
 
 Socket IO 
 
+HOC - Higher Level Components
+
+Persistent Login
