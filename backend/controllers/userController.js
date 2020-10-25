@@ -72,6 +72,7 @@ exports.login = async (req, res) => {
   // the token is comprised of the User Mongoose _Id
   res.json({
     message: "User logged in successfully!",
-    token
+    token,
+    role: user.role;
   });
 };
