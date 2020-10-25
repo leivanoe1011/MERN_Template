@@ -1,6 +1,7 @@
 
 const mongoose = require("mongoose");
 
+// there are times
 const messageSchema = new mongoose.Schema({
   // chatroom foreign key
   chatroom: {

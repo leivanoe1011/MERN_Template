@@ -5,6 +5,10 @@ const jwt = require("jwt-then");
 
 module.exports = async (req, res, next) => {
   try {
+
+    console.log("In Auth JS file");
+    console.log(next);
+
     if (!req.headers.authorization) throw "Forbidden!!";
 
     // Within the request we can find the token
@@ -12,11 +16,16 @@ module.exports = async (req, res, next) => {
 
     // Need to pass the secret in order to read the token
     const payload = await jwt.verify(token, process.env.SECRET);
+
+    // This will load the token to the Request Object
+    // which includes the USER Mongo Model Object _ID
     req.payload = payload;
 
-    // Return the Object if user has been authorized
-    // If return NULL, than the AUTH object will fail
+    // Move to the next step of the function that requested Authorization
     next(); 
+
+    console.log(next);
+    
 
   } catch (err) {
     res.status(401).json({

@@ -50,12 +50,16 @@ const Message = mongoose.model("Message");
 const User = mongoose.model("User");
 
 
-
+// Middleware for the Authentication
+// Registers a middleware, which is a function that gets executed for every incoming Socket, 
+// and receives as parameters the socket and a function to optionally defer execution 
+// to the next registered middleware
 io.use(async (socket, next) => {
     try{
 
         console.log("In socket io validating JWT token");
 
+        // socket.handshake.query currently allows data to be set on "connect"
         const token = socket.handshake.query.token;
 
         // validate the token is correct
@@ -64,14 +68,15 @@ io.use(async (socket, next) => {
         // Get the Mongo DB User ID
         socket.userId = payload.id;
 
-        // Return the object with the verification information above
+        // Return the Object with the verification information above
         next();
     }
     catch(err){}
 });
 
 
-// socket io listening
+// socket io listening 
+// This is the Client Socket
 io.on("connection", (socket) => {
     console.log("Connected: " + socket.userId);
   
