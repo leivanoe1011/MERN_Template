@@ -6,6 +6,7 @@ const IndexPage = (props) => {
   React.useEffect(() => {
 
     const token = localStorage.getItem("CC_Token");
+    console.log("In the Index Page");
     console.log(token);
 
     // If the Token is not loaded in the Local Storage

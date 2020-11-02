@@ -8,6 +8,8 @@ import DashboardPage from "./Pages/DashboardPage";
 import IndexPage from "./Pages/IndexPage";
 import ChatroomPage from "./Pages/ChatroomPage";
 import io from "socket.io-client";
+// import PrivateRoute from './hocs/PrivateRoute';
+// import UnPrivateRoute from './hocs/UnPrivateRoute';
 import makeToast from "./Toaster";
 
 function App() {
@@ -27,7 +29,7 @@ function App() {
     const token = localStorage.getItem("CC_Token");
 
 
-    // If token exists and Socket is NULL
+    // If token exists and Socket is not NULL
     if (token && !socket) {
       
       // Connect to the server and get the token

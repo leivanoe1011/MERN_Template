@@ -6,7 +6,7 @@ const sha256 = require("js-sha256"); // encrypt password
 const jwt = require("jwt-then"); // creates token
 
 
-// Have to make the function below Async
+// Have to make the function below ASYNC
 // In order to use AWAIT below. Also it will prevent the Event Handler
 // To run before the code below runs
 exports.register = async (req, res) => {
@@ -15,6 +15,7 @@ exports.register = async (req, res) => {
   const { name, email, password } = req.body;
 
   // Validate that either email extension below exists within the Email Entry
+  // May need an API to make sure this is Dynamic
   const emailRegex = /@gmail.com|@yahoo.com|@hotmail.com|@live.com/;
 
   // email must contain one of the domains above
@@ -60,7 +61,7 @@ exports.login = async (req, res) => {
 
   if (!user) throw "Email and Password did not match.";
 
-
+  
   // The SECRET below is the key used to generate the token and read the token
   // Create the token which includes the USER ID
   // The user ID is captured above
@@ -73,6 +74,6 @@ exports.login = async (req, res) => {
   res.json({
     message: "User logged in successfully!",
     token,
-    role: user.role;
+    role: user.role
   });
 };

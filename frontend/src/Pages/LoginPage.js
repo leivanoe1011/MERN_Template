@@ -23,6 +23,11 @@ const LoginPage = (props) => {
       .then((response) => { 
 
 
+        console.log("After logged In");
+        
+        console.log(response.data);
+
+
         makeToast("success", response.data.message);
 
         // Here we load the Token to the Local Storage
