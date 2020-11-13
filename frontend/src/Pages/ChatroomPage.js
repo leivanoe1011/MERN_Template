@@ -10,22 +10,32 @@ import { withRouter } from "react-router-dom";
 const ChatroomPage = ({ match, socket }) => {
 
 
+  // The ID will come from the APP.JS file
   const chatroomId = match.params.id;
   const [messages, setMessages] = React.useState([]);
   const messageRef = React.useRef();
   const [userId, setUserId] = React.useState("");
 
+  // Creates a new message and sends it back to the Server
   const sendMessage = () => {
+
+    // Validate if the Socket is not null
     if (socket) {
+
+      // Reach out to the Backend using the Socket IO Method/Function below
       socket.emit("chatroomMessage", {
         chatroomId,
         message: messageRef.current.value,
       });
 
+      // This will erase the Message in the input box once that message has been loaded above
       messageRef.current.value = "";
     }
   };
 
+  
+  // First function executed when this Object Loads. 
+  // Similar to Component Di Mount
   React.useEffect(() => {
     const token = localStorage.getItem("CC_Token");
 
@@ -38,6 +48,7 @@ const ChatroomPage = ({ match, socket }) => {
       const payload = JSON.parse(atob(token.split(".")[1]));
       setUserId(payload.id);
     }
+
     if (socket) {
       socket.on("newMessage", (message) => {
         // Rest properties for destructuring assignment
@@ -78,7 +89,7 @@ const ChatroomPage = ({ match, socket }) => {
       <div className="chatroomSection">
         <div className="cardHeader">Chatroom Name</div>
         <div className="chatroomContent">
-          {/* Any time the messages are updated, this function will be re-rendered */}
+          {/* Anytime the messages are updated, this function will be rendered */}
           {messages.map((message, i) => (
             <div key={i} className="message">
               <span

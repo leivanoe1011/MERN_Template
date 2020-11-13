@@ -17,6 +17,8 @@ function App() {
   // State Variable this will contain the Persistent login
   const [socket, setSocket] = React.useState(null);
 
+  const [role, setRole] = React.useState("");
+
 
   // Once the user is logged in, then they go to the Local Storage 
   // And grab the Token
@@ -28,9 +30,12 @@ function App() {
     // We get a new token
     const token = localStorage.getItem("CC_Token");
 
+    setRole(localStorage.getItem("User_Role"));
+
 
     // If token exists and Socket is not NULL
     if (token && !socket) {
+
       
       // Connect to the server and get the token
       const newSocket = io("http://localhost:8000", {
@@ -91,6 +96,9 @@ function App() {
           render={() => <ChatroomPage socket={socket} />}
           exact
         />
+
+        {/* <PrivateRoute path="/admin" roles={["admin"]} component={Admin}, socket={socket}/> */}
+
       </Switch>
     </BrowserRouter>
   );

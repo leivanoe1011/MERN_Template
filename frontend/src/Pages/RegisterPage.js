@@ -1,22 +1,34 @@
+
 import React from "react";
 import axios from "axios";
 import makeToast from "../Toaster";
 
 const RegisterPage = (props) => {
-  const nameRef = React.createRef();
+  const firstNameRef = React.createRef();
+  const lastNameRef = React.createRef();
+  const dobRef = React.createRef();
   const emailRef = React.createRef();
   const passwordRef = React.createRef();
+  const roleRef = React.createRef();
 
-  const registerUser = (props) => {
-    const name = nameRef.current.value;
+  const registerUser = () => {
+    
+    const firstName = firstNameRef.current.value;
+    const lastName = lastNameRef.current.value;
+    const dob = dobRef.current.value;
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
+    const role = roleRef.current.value;
+
 
     axios
       .post("http://localhost:8000/user/register", {
-        name,
+        firstName, 
+        lastName,
+        dob,
         email,
         password,
+        role
       })
       .then((response) => {
 
@@ -24,6 +36,7 @@ const RegisterPage = (props) => {
         makeToast("success", response.data.message);
 
         props.history.push("/login");
+
       })
       .catch((err) => {
         // console.log(err);
@@ -44,13 +57,33 @@ const RegisterPage = (props) => {
       <div className="cardHeader">Registration</div>
       <div className="cardBody">
         <div className="inputGroup">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="firstName">First Name</label>
           <input
             type="text"
-            name="name"
-            id="name"
-            placeholder="John Doe"
-            ref={nameRef}
+            name="firstName"
+            id="firstName"
+            placeholder="John"
+            ref={firstNameRef}
+          />
+        </div>
+        <div className="inputGroup">
+        <label htmlFor="lastName">Last Name</label>
+          <input
+            type="text"
+            name="lastName"
+            id="lastName"
+            placeholder="Doe"
+            ref={lastNameRef}
+          />
+        </div>
+        <div className="inputGroup">
+        <label htmlFor="dob">Date of Birth</label>
+          <input
+            type="text"
+            name="dob"
+            id="dob"
+            placeholder="10-11-1986"
+            ref={dobRef}
           />
         </div>
         <label htmlFor="email">Email</label>
@@ -72,6 +105,18 @@ const RegisterPage = (props) => {
           ref={passwordRef}
         />
       </div>
+      {/* Need to make this a drop-down */}
+      <div className="inputGroup">
+        <label htmlFor="role">Role</label>
+        <input
+          type="text"
+          name="role"
+          id="role"
+          placeholder="Your Role"
+          ref={roleRef}
+        />
+      </div>
+      
       <button onClick={registerUser}>Register</button>
     </div>
   );

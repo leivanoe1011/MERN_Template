@@ -11,8 +11,11 @@ const jwt = require("jwt-then"); // creates token
 // To run before the code below runs
 exports.register = async (req, res) => {
 
+  console.log("in register user controller");
+
   // The order of the object variables below must be the same in the front end
-  const { name, email, password } = req.body;
+  // const { name, email, password } = req.body;
+  const { firstName, lastName, dob, email, password, role } = req.body;
 
   // Validate that either email extension below exists within the Email Entry
   // May need an API to make sure this is Dynamic
@@ -34,9 +37,12 @@ exports.register = async (req, res) => {
 
   // Create the User Object
   const user = new User({
-    name,
     email,
     password: sha256(password + process.env.SALT), // SALT will be used to encrypt password
+    firstName,
+    lastName,
+    dob,
+    role
   });
 
 
@@ -44,7 +50,7 @@ exports.register = async (req, res) => {
   await user.save();
 
   res.json({
-    message: "User [" + name + "] registered successfully!",
+    message: "User [" + firstName + "] registered successfully!"
   });
 };
 
@@ -52,6 +58,8 @@ exports.register = async (req, res) => {
 // have to make the funtion below ASYNC
 exports.login = async (req, res) => {
   
+  console.log("In the Login function user controller");
+
   const { email, password } = req.body;
 
   const user = await User.findOne({

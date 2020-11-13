@@ -22,4 +22,6 @@ SALT will contains the "js-sha256" NPM library key to encrypt and decrypt User M
 SECRET is the key used to encrypt and decrypt the JWT token
 
 
+If we pass socket than we don't need to define Authentication, we can pass this as a PROP
+
 

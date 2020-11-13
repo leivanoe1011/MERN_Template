@@ -34,6 +34,8 @@ const LoginPage = (props) => {
         // The App JS will get the Token
         localStorage.setItem("CC_Token", response.data.token);
 
+        localStorage.setItem("User_Role", response.data.role);
+
         // After user is logged in, we load the Dashboard page
         // This is possible with the withRouter React Function at the end
         props.history.push("/dashboard");
