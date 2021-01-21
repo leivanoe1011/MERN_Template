@@ -1,3 +1,4 @@
+
 import React, {createContext,useState,useEffect} from 'react';
 import AuthService from '../Services/AuthService';
 
@@ -18,7 +19,9 @@ export default ({ children })=>{
 
     return (
         <div>
+            {/* loading will display until the isLoaded variable is set to TRUE */}
             {!isLoaded ? <h1>Loading</h1> : 
+            // The variables below will be available to be accessed to all Lower Level components
             <AuthContext.Provider value={{user,setUser,isAuthenticated,setIsAuthenticated}}>
                 { children }
             </AuthContext.Provider>}

@@ -5,6 +5,7 @@ require("dotenv").config();
 
 const mongoose = require("mongoose");
 
+// Here we determine the environment
 const config = require("./config/key");
 
 
@@ -41,7 +42,13 @@ const server = app.listen(PORT, () => {
 });
 
 
-const io = require("socket.io")(server);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});
+
 const jwt = require("jwt-then");
 
 
@@ -54,6 +61,7 @@ const User = mongoose.model("User");
 // and receives as parameters the socket and a function to optionally defer execution 
 // to the next registered middleware
 io.use(async (socket, next) => {
+
   try{
 
         console.log("In socket io validating JWT token");
@@ -67,6 +75,13 @@ io.use(async (socket, next) => {
         // Get the Mongo DB User ID
         socket.userId = payload.id;
 
+        // After translating the token we capture 
+        // the Role property that we stored at signin
+        socket.role = payload.role;
+
+        socket.dbId = "hello";
+
+
         // Return the Object with the verification information above
         next();
     }
@@ -76,7 +91,7 @@ io.use(async (socket, next) => {
 
 // socket io listening 
 // This is the Client Socket
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
 
     // When creating the Token, the User ID is loaded within the token
     // After making the JWT call, the token is parsed and USER ID stored within a property
@@ -100,34 +115,30 @@ io.on("connection", (socket) => {
     // Making the function below an ASYNC function to wait until we find
     // The user ID
     socket.on("chatroomMessage", async ({ chatroomId, message }) => {
-    
-    console.log("In socket Chatroom Message");
-    
-    // Only send back the messages if they exist
-    if (message.trim().length > 0) {
-      const user = await User.findOne({ _id: socket.userId });
+         
+      // Only send back the messages if they exist
+      if (message.trim().length > 0) {
+        const user = await User.findOne({ _id: socket.userId });
 
-      // Create a Message Model Object
-      const newMessage = new Message({
-        chatroom: chatroomId,
-        user: socket.userId,
-        message,
-      });
+        // Create a Message Model Object
+        const newMessage = new Message({
+          chatroom: chatroomId,
+          user: socket.userId,
+          message,
+        });
 
-      console.log(newMessage);
+        // Return the new Message to anyone connected to the same Chatroom Id
+        io.to(chatroomId).emit("newMessage", {
+          message,
+          name: user.firstName,
 
-      // Return the new Message to anyone connected to the same Chatroom Id
-      io.to(chatroomId).emit("newMessage", {
-        message,
-        name: user.name,
+          // This user ID is used to track the User that submitted the message
+          userId: socket.userId,
+        });
 
-        // This user ID is used to track the User that submitted the message
-        userId: socket.userId,
-      });
-
-      // After the Message is sent back to the Front End, than we save it
-      await newMessage.save();
-    }
+        // After the Message is sent back to the Front End, than we save it
+        await newMessage.save();
+      }
 
   });
 

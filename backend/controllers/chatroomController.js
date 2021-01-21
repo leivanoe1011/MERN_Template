@@ -33,8 +33,22 @@ exports.createChatroom = async (req, res) => {
 // Get all Chatrooms after the User has been validated
 exports.getAllChatrooms = async (req, res) => {
 
+
   // Wait until all chatrooms are loaded before sending back the Object
   const chatrooms = await Chatroom.find({});
 
   res.json(chatrooms);
 };
+
+
+exports.getChatId = async (req, res) => {
+
+  const chatId = req.body.id;
+
+  const chatroom = await Chatroom.find({});
+
+  res.json(chatroom);
+
+}
+
+

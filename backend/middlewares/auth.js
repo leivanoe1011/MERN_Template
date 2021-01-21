@@ -4,10 +4,8 @@
 const jwt = require("jwt-then");
 
 module.exports = async (req, res, next) => {
-  try {
 
-    console.log("In Auth JS file");
-    console.log(next);
+  try {
 
     if (!req.headers.authorization) throw "Forbidden!!";
 
@@ -23,8 +21,6 @@ module.exports = async (req, res, next) => {
 
     // Move to the next step of the function that requested Authorization
     next(); 
-
-    console.log(next);
     
 
   } catch (err) {

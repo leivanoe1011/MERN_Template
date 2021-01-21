@@ -17,8 +17,6 @@ function App() {
   // State Variable this will contain the Persistent login
   const [socket, setSocket] = React.useState(null);
 
-  const [role, setRole] = React.useState("");
-
 
   // Once the user is logged in, then they go to the Local Storage 
   // And grab the Token
@@ -37,7 +35,9 @@ function App() {
     if (token && !socket) {
 
       
-      // Connect to the server and get the token
+      // Connect to the server and validate the token
+      // This will go to the function in the Server where we are 
+      // Initializing the IO middleware
       const newSocket = io("http://localhost:8000", {
         query: {
           token: localStorage.getItem("CC_Token"),
